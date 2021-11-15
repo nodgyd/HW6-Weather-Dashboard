@@ -20,44 +20,21 @@
                     <div class="border-bottom border-dark m-1">
                         <input type="text" class="w-75 m-2" placeholder="Los Angeles" name="city" id="cityInput">
                         <button type="button" class="btn btn-primary w-75 m-2" id="submit">Submit</button>
+                        <button type="button" class="btn btn-primary w-75 m-2" id="clear">Clear</button>
                     </div>
                     <div id="cityHistory"></div>
                 </div>
             </aside>
             <div id="apiCall" class="col-9">
-                <section id="today">
-                    <h2 id="card-title">
-                        <img src="" alt="">
-                    </h2>
-                    <p class="card-text"></p>
-                    <p class="card-text"></p>
-                    <p class="card-text"></p>
-                    <p class="card-text"></p>
-                </section>
-                <section id="forecast">
-                    <div class="col-12">
-                        <h2>5 Day Forecast |</h2>
-                    </div>
-                    <div class="forecasetCard">
-                        <div class="">
-                            <div class="">
-                                <h3></h3>
-                                <img src="" alt="">
-                                <p></p>
-                                <p></p>
-                                <p></p>
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <section id="today"></section>
+                <section id="forecast"></section>
             </div>
         </div>
     </div>
     
 </body>
-<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 <script src="script.js"></script>
 </html>
 
