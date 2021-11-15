@@ -7,7 +7,7 @@ const history = $("#cityHistory");
 const currentDay = dayjs().format("dddd, MMMM D, YYYY");
 const clearBtn = $("#clear")
 cityChoiceAr = [];
-cityArr = JSON.parse(localStorage.getItem("city"))
+const cityArr = JSON.parse(localStorage.getItem("city"))
 
 cityinputEl.keydown(function (event) {
     if (event.keyCode == 13) {
@@ -26,34 +26,33 @@ cityinputEl.keydown(function (event) {
     localStorage.setItem('city', JSON.stringify(cityChoiceAr));
 });
 
-const findCityName = (finalCity) => {
-    console.log(finalCity)
+const findCityName = (event) => {
     $("#apiCall").innerHTML = '';
-    var urlRequest = 'https://api.openweathermap.org/data/2.5/weather?q='+finalCity+'&appid=376b31c0d35b891d69be7dac3c604407'
+    var urlRequest = 'https://api.openweathermap.org/data/2.5/weather?q='+event+'&appid=376b31c0d35b891d69be7dac3c604407'
     fetch(urlRequest)
     .then(function (response) {
       return response.json();
     })
-    .then(function (data) {
-      console.log(data);
-      var lat = data.coord.lat;
-      var lon = data.coord.lon;
+    .then(function (data1) {
+      console.log(data1);
+      var lat = data1.coord.lat;
+      var lon = data1.coord.lon;
       console.log(lat);
       console.log(lon);
       var urlCall = 'https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&units=imperial&APPID=376b31c0d35b891d69be7dac3c604407'
       fetch(urlCall)
-      .then(function (response) {return response.json();}).then(function (data) {
-            console.log(data)
+      .then(function (response) {return response.json();}).then(function (data2) {
+            console.log(data2)
             for (let i = 0; i < 1; i++) {
                 $("#today").append(`
                 <section id="today" class="mt-2 p-1 border border-2 border-dark">
-                    <h2 id="card-title">${inputValue} | ${currentDay}
-                        <img src="http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png" alt="">
+                    <h2 id="card-title">${data1.name} | ${currentDay}
+                        <img src="http://openweathermap.org/img/wn/${data2.current.weather[0].icon}@2x.png" alt="">
                     </h2>
-                    <p class="card-text">Temperature: ${data.current.temp} F</p>
-                    <p class="card-text">Wind: ${data.current.wind_speed} MPH</p>
-                    <p class="card-text">Humidity: ${data.current.humidity}</p>
-                    <p class="card-text ${data.current.uvi < 2 ? 'green' : data.current.uvi >= 3 ? 'yellow' : data.current.uvi > 5 ? 'red' : ""}">UV Index: ${data.current.uvi}</p>
+                    <p class="card-text">Temperature: ${data2.current.temp} F</p>
+                    <p class="card-text">Wind: ${data2.current.wind_speed} MPH</p>
+                    <p class="card-text">Humidity: ${data2.current.humidity}</p>
+                    <p class="card-text ${data2.current.uvi <= 2 ? 'green' : data2.current.uvi <= 5 ? 'yellow' : data2.current.uvi > 5 ? 'red' : ""}">UV Index: ${data2.current.uvi}</p>
                 </section>
                 `)
             }
@@ -63,12 +62,12 @@ const findCityName = (finalCity) => {
                         <div class="five-day card bg-primary h-100 text-white m-1">
                             <div class="card-body p-2">
                                 <h3>${ dayjs().add( i+1, 'day').format('dddd, MMMM D') }
-                                <img src="http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}@2x.png" alt="">
+                                <img src="http://openweathermap.org/img/wn/${data2.daily[i].weather[0].icon}@2x.png" alt="">
                                 </h3> 
-                                <p>Temperature: ${data.daily[i].temp.day}</p>
-                                <p>Wind: ${data.daily[i].wind_speed}</p>
-                                <p>Humidity: ${data.daily[i].humidity}</p>
-                                <p class="text-dark ${data.daily[i].uvi < 2 ? 'green' : data.daily[i].uvi >= 3 ? 'yellow' : data.daily[i].uvi > 5 ? 'red' : ""}">UV Index: ${data.daily[i].uvi}</p>
+                                <p>Temperature: ${data2.daily[i].temp.day}</p>
+                                <p>Wind: ${data2.daily[i].wind_speed}</p>
+                                <p>Humidity: ${data2.daily[i].humidity}</p>
+                                <p class="text-dark ${data2.daily[i].uvi < 2 ? 'green' : data2.daily[i].uvi >= 3 ? 'yellow' : data2.daily[i].uvi > 5 ? 'red' : ""}">UV Index: ${data2.daily[i].uvi}</p>
                             </div>
                         </div>
                     </div>
@@ -92,6 +91,11 @@ storageCheck = () => {
 };
 storageCheck();
 
+$(".cityBtn").on("click", (event) => {
+    console.log(event)
+    findCityName(event.target.innerText)
+})
+
 submitBtn.on("click", onClick = () => {
     findCityName(finalCity)
     $("#forecast").append(`
@@ -99,9 +103,6 @@ submitBtn.on("click", onClick = () => {
     `)
 });
 
-$(".cityBtn").on("click", () => {
-    findCityName()
-})
 
 $("#inputValue").on("click", () => {
     findCityName(final)
