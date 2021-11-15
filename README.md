@@ -18,7 +18,7 @@ If your README is long, add a table of contents to make it easy for users to fin
 What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
 
 ## Usage
-![screenshot1](./Assets/screenshot1.png)
+![screenshot1](./Assets/screenshot1.jpg)
 
 ## Features
 - Allows user to input city to then shift through openweatherAPI
