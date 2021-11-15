@@ -11,8 +11,7 @@ cityinputEl.keydown(function (event) {
     if (event.keyCode == 13) {
       event.preventDefault();
       const inputValue = cityinputEl.val();
-      const finalValue = inputValue.split(" ").join("%20");
-      cityChoiceAr.push(finalValue);
+      cityChoiceAr.push(inputValue);
       console.log(cityChoiceAr);
       if(!inputValue) {
       } else {
@@ -25,30 +24,30 @@ cityinputEl.keydown(function (event) {
   
 
 
-const findCityName = (finalValue) => {
+const findCityName = (inputValue) => {
     $("#apiCall").innerHTML = '';
-    localStorage.setItem('searchHistory', JSON.stringify(finalValue));
-    console.log(finalValue);
-    var urlRequest = 'https://api.openweathermap.org/data/2.5/weather?q='+finalValue+'&appid=376b31c0d35b891d69be7dac3c604407    '
+    localStorage.setItem('searchHistory', JSON.stringify(inputValue));
+    console.log(inputValue);
+    var urlRequest = 'https://api.openweathermap.org/data/2.5/weather?q='+inputValue+'&appid=376b31c0d35b891d69be7dac3c604407'
     fetch(urlRequest)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
       console.log(data);
+      var lat = data.coord.lat;
+      var lon = data.coord.lon;
+      console.log(lat);
+      console.log(lon);
+      var urlCall = 'https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&units=imperial&APPID=376b31c0d35b891d69be7dac3c604407'
+      fetch(urlCall)
+      .then(function (response) {
+          return response.json();
+        });
+        .then(function (data) {
+            console.log(data)
+        });
     });  
-    //   var lat = data.coord.lat;
-    //   var lon = data.coord.lon;
-    //   console.log(lat);
-    //   console.log(lon);
-    //   var urlCall = 'https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&units=imperial&APPID=376b31c0d35b891d69be7dac3c604407'
-    //     fetch(urlCall)
-    //       .then(function (response) {
-    //       return response.json();
-    //       });
-    //       .then(function (data) {
-    //       console.log(data)
-    //     });
 };
 
 
