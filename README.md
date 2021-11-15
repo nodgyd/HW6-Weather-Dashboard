@@ -19,7 +19,6 @@ What are the steps required to install your project? Provide a step-by-step desc
 
 ## Usage
 ![screenshot1](./Assets/screenshot1.png)
-![screenshot2](./Assets/screenshot2.png)
 
 ## Features
 - Allows user to input city to then shift through openweatherAPI
