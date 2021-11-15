@@ -7,7 +7,7 @@ const history = $("#cityHistory");
 const currentDay = dayjs().format("dddd, MMMM D, YYYY");
 const clearBtn = $("#clear")
 cityChoiceAr = [];
-
+cityArr = JSON.parse(localStorage.getItem("city"))
 
 cityinputEl.keydown(function (event) {
     if (event.keyCode == 13) {
@@ -19,14 +19,14 @@ cityinputEl.keydown(function (event) {
         if(!inputValue) {
         } else {
             history.append(`
-            <li class="inputValue"><button class="btn btn-primary w-75 m-2 text-white">${inputValue}</button></li>`)
+            <li class="inputValue"><button id="cityBtn" class="cityBtn btn btn-primary w-75 m-2 text-white">${inputValue}</button></li>`)
         }
         $("input").val("");
     }
     localStorage.setItem('city', JSON.stringify(cityChoiceAr));
 });
 
-const findCityName = () => {
+const findCityName = (finalCity) => {
     console.log(finalCity)
     $("#apiCall").innerHTML = '';
     var urlRequest = 'https://api.openweathermap.org/data/2.5/weather?q='+finalCity+'&appid=376b31c0d35b891d69be7dac3c604407'
@@ -46,31 +46,29 @@ const findCityName = () => {
             console.log(data)
             for (let i = 0; i < 1; i++) {
                 $("#today").append(`
-                <section id="today">
+                <section id="today" class="mt-2 p-1 border border-2 border-dark">
                     <h2 id="card-title">${inputValue} | ${currentDay}
                         <img src="http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png" alt="">
                     </h2>
                     <p class="card-text">Temperature: ${data.current.temp} F</p>
                     <p class="card-text">Wind: ${data.current.wind_speed} MPH</p>
                     <p class="card-text">Humidity: ${data.current.humidity}</p>
-                    <p class="card-text">UV Index: ${data.current.uvi}</p>
+                    <p class="card-text ${data.current.uvi < 2 ? 'green' : data.current.uvi >= 3 ? 'yellow' : data.current.uvi > 5 ? 'red' : ""}">UV Index: ${data.current.uvi}</p>
                 </section>
                 `)
             }
             for (let i = 0; i < 5; i++) {
                 $("#forecast").append(`
-                <div class="col-12">
-                    </div>
-                        <div class="forecasetCard">
-                            <div class="">
-                                <div class="">
+                    </div class="col-md forecastCard">
+                        <div class="five-day card bg-primary h-100 text-white m-1">
+                            <div class="card-body p-2">
                                 <h3>${ dayjs().add( i+1, 'day').format('dddd, MMMM D') }
                                 <img src="http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}@2x.png" alt="">
                                 </h3> 
                                 <p>Temperature: ${data.daily[i].temp.day}</p>
                                 <p>Wind: ${data.daily[i].wind_speed}</p>
                                 <p>Humidity: ${data.daily[i].humidity}</p>
-                                <p>UV Index: ${data.daily[i].uvi}</p>
+                                <p class="text-dark ${data.daily[i].uvi < 2 ? 'green' : data.daily[i].uvi >= 3 ? 'yellow' : data.daily[i].uvi > 5 ? 'red' : ""}">UV Index: ${data.daily[i].uvi}</p>
                             </div>
                         </div>
                     </div>
@@ -83,21 +81,27 @@ const findCityName = () => {
 
 //local storage check and if there is content we append to page
 storageCheck = () => {
-    localStorage.getItem("city") ? JSON.parse(localStorage.getItem("city")) for (let i = 0: i < localStorage.length; i++) {
-        history.append(`
-        <li class="inputValue"><button class="btn btn-primary w-75 m-2 text-white">${localStorage[i]}</button></li>`)
-    } : []
+    if (!cityArr) {
+    } else {
+        for (let i = 0; i < cityArr.length; i++) {
+            history.append(`
+            <li class="inputValue"><button class="cityBtn btn btn-primary w-75 m-2 text-white">${cityArr[i]}</button></li>
+            `)
+        }
+    }
 };
-
-
-
+storageCheck();
 
 submitBtn.on("click", onClick = () => {
     findCityName(finalCity)
     $("#forecast").append(`
-    <h2>5 Day Forecast |</h2>
+    <h2 class="mt-3">5 Day Forecast |</h2>
     `)
 });
+
+$(".cityBtn").on("click", () => {
+    findCityName()
+})
 
 $("#inputValue").on("click", () => {
     findCityName(final)
@@ -105,7 +109,7 @@ $("#inputValue").on("click", () => {
 
 clearBtn.on("click", () => {
     localStorage.clear()
-    location.reload
+    location.reload()
 })
 
 

@@ -10,12 +10,12 @@
 </head>
 <body>
     <header class="container-fluid border-dark text-center text-black p-4 border-bottom border-3 gradient-bg">
-        <h1>Weather Dashboard</h1>
+        <h1 class="text-dark">Weather Dashboard</h1>
     </header>
     <div class="container-fluid">
         <div class="row">
-            <aside class="col-3">
-                <h2 class="text-black">Enter a City:</h2>
+            <aside class="col-lg-3 text-center">
+                <h2 class="text-white">Enter a City:</h2>
                 <div class="form">
                     <div class="border-bottom border-dark m-1">
                         <input type="text" class="w-75 m-2" placeholder="Los Angeles" name="city" id="cityInput">
@@ -25,9 +25,9 @@
                     <div id="cityHistory"></div>
                 </div>
             </aside>
-            <div id="apiCall" class="col-9">
+            <div id="apiCall" class="col-lg-9">
                 <section id="today"></section>
-                <section id="forecast"></section>
+                <section id="forecast" class="row m-2"></section>
             </div>
         </div>
     </div>
